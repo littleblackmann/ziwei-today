@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="splash_background">#FFFFF8E7</color>
+    <color name="brand_primary">#FF8C2A2A</color>
+
+    <!-- Adaptive icon 背景（暫用，之後做專案自己的 icon 再換）-->
+    <color name="ic_launcher_background">#FFFFF8E7</color>
+</resources>
