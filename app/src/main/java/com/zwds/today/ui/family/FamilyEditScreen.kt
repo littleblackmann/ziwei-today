@@ -1,7 +1,5 @@
 package com.zwds.today.ui.family
 
-import android.content.Context
-import android.graphics.drawable.ColorDrawable
 import android.util.TypedValue
 import android.widget.EditText
 import android.widget.NumberPicker
@@ -127,6 +125,7 @@ fun FamilyEditScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
+            com.zwds.today.ui.common.SectionTitle("一份專屬的每日提醒", "出生資料只保存在此裝置，之後也可以隨時修改。")
             // 稱呼
             FieldLabel("稱呼")
             OutlinedTextField(
@@ -135,7 +134,8 @@ fun FamilyEditScreen(
                 placeholder  = { Text("例如：爸爸、老伴、阿嬤") },
                 modifier     = Modifier.fillMaxWidth(),
                 textStyle    = MaterialTheme.typography.titleLarge,
-                singleLine   = true
+                singleLine   = true,
+                shape = RoundedCornerShape(16.dp)
             )
 
             // 性別
@@ -155,8 +155,8 @@ fun FamilyEditScreen(
                 Column(modifier = Modifier.weight(1f)) {
                     FieldLabel("使用農曆輸入")
                     Text(
-                        if (state.isLunarInput) "目前是農曆模式（自動換算成國曆儲存）"
-                        else "目前是國曆模式（西元曆）",
+                        if (state.isLunarInput) "依農曆生日選擇年月日"
+                        else "依國曆生日選擇年月日",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -201,7 +201,7 @@ fun FamilyEditScreen(
                 modifier          = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text("設為主帳號", style = MaterialTheme.typography.titleMedium)
+                    Text("設為預設家人", style = MaterialTheme.typography.titleMedium)
                     Text(
                         "命盤與運勢查詢的預設對象",
                         style = MaterialTheme.typography.bodyMedium,
@@ -260,7 +260,7 @@ private fun SolarDateWheel(
     year: Int, month: Int, day: Int,
     onChange: (Int, Int, Int) -> Unit
 ) {
-    val yearRange = 1920..2010
+    val yearRange = 1920..java.time.LocalDate.now().year.coerceAtMost(2100)
     val maxDay    = remember(year, month) { maxDayInMonth(year, month) }
 
     // 日期鉗制：切換月份時若 day 超過上限自動修正
@@ -309,7 +309,7 @@ private fun LunarDateWheel(
     year: Int, month: Int, day: Int, isLeap: Boolean,
     onChange: (Int, Int, Int, Boolean) -> Unit
 ) {
-    val yearRange = 1920..2010
+    val yearRange = 1920..java.time.LocalDate.now().year.coerceAtMost(2100)
     val years     = remember { yearRange.map { "${it}年" } }
     val months    = remember { (1..12).map { "${it}月" } }
     val leapMonth = remember(year) { LunarCalendar.leapMonth(year) }
@@ -446,8 +446,6 @@ private fun NativePickerColumn(
     val density = LocalDensity.current
     val colors = MaterialTheme.colorScheme
     val textColor = colors.onSurface.toArgb()
-    val hintColor = colors.onSurfaceVariant.toArgb()
-    val dividerColor = colors.primary.copy(alpha = 0.24f).toArgb()
     val textSizePx = with(density) {
         MaterialTheme.typography.titleLarge.fontSize.toPx()
     }
@@ -471,8 +469,6 @@ private fun NativePickerColumn(
                 selectedIndex = selected,
                 wrap = items.size > 1,
                 textColor = textColor,
-                hintColor = hintColor,
-                dividerColor = dividerColor,
                 textSizePx = textSizePx,
                 onIndexChange = onIndexChange
             )
@@ -486,8 +482,6 @@ private fun bindPickerItems(
     selectedIndex: Int,
     wrap: Boolean,
     textColor: Int,
-    hintColor: Int,
-    dividerColor: Int,
     textSizePx: Float,
     onIndexChange: (Int) -> Unit
 ) {
@@ -508,8 +502,6 @@ private fun bindPickerItems(
     styleNumberPicker(
         picker = picker,
         textColor = textColor,
-        hintColor = hintColor,
-        dividerColor = dividerColor,
         textSizePx = textSizePx
     )
 
@@ -521,22 +513,12 @@ private fun bindPickerItems(
 private fun styleNumberPicker(
     picker: NumberPicker,
     textColor: Int,
-    hintColor: Int,
-    dividerColor: Int,
     textSizePx: Float
 ) {
-    runCatching {
-        val paintField = NumberPicker::class.java.getDeclaredField("mSelectorWheelPaint")
-        paintField.isAccessible = true
-        val paint = paintField.get(picker) as android.graphics.Paint
-        paint.color = hintColor
-        paint.textSize = textSizePx
-    }
-
-    runCatching {
-        val dividerField = NumberPicker::class.java.getDeclaredField("mSelectionDivider")
-        dividerField.isAccessible = true
-        dividerField.set(picker, ColorDrawable(dividerColor))
+    if (android.os.Build.VERSION.SDK_INT >= 29) {
+        picker.textColor = textColor
+        picker.textSize = textSizePx
+        picker.selectionDividerHeight = 0
     }
 
     for (i in 0 until picker.childCount) {

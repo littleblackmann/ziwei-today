@@ -55,6 +55,7 @@ class FamilyRepository(
 
     suspend fun delete(member: FamilyMemberEntity) {
         database.withTransaction {
+            database.topicHistoryDao().deleteByMember(member.id)
             dao.delete(member)
             // 如果刪掉的是主帳號，把第一筆自動補上
             if (member.isPrimary) {

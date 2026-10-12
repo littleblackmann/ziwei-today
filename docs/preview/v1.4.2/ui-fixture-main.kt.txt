@@ -1,0 +1,51 @@
+package com.zwds.today
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Text
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.zwds.today.data.network.OpenAiException
+import com.zwds.today.data.network.ResponsesStream
+import com.zwds.today.ui.common.ZwdsScaffold
+import com.zwds.today.ui.theme.FontScale
+import com.zwds.today.ui.theme.TodayZwdsTheme
+import com.zwds.today.ui.topic.TopicResultError
+import com.zwds.today.ui.topic.TopicResultErrorPanel
+import java.io.StringReader
+
+// QA-only launcher in a separate TEMP project. Never included in distributed APKs.
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val scenario = intent.getStringExtra("scenario") ?: "empty"
+        val event = when (scenario) {
+            "quota" -> """{"type":"response.failed","response":{"error":{"code":"subscription_sharing_usage_limit_exceeded"}}}"""
+            "refusal" -> """{"type":"response.refusal.done","refusal":"QA-only synthetic refusal"}"""
+            else -> """{"type":"response.completed","response":{"status":"completed","output":[]}}"""
+        }
+        val error = try {
+            ResponsesStream.read(StringReader("data: $event\n\n").buffered(), "req_ui_fixture_142")
+            TopicResultError.Unknown("Fixture unexpectedly succeeded")
+        } catch (e: OpenAiException) {
+            if (e.usageLimit) TopicResultError.UsageLimit(e.message!!, e.diagnostic)
+            else TopicResultError.Network(e.message!!, e.diagnostic)
+        }
+        setContent {
+            TodayZwdsTheme(darkTheme = !intent.getBooleanExtra("light", false),
+                fontScale = if (intent.getBooleanExtra("extra", false)) FontScale.ExtraLarge else FontScale.Standard) {
+                ZwdsScaffold("整體運勢", onBack = { finish() }) { padding ->
+                    Column(Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState())
+                        .padding(horizontal = 20.dp, vertical = 12.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+                        TopicResultErrorPanel(error, onRetry = {}, onOpenAccount = {})
+                        Text("QA fixture · $scenario · 非真人 AI 回應")
+                    }
+                }
+            }
+        }
+    }
+}

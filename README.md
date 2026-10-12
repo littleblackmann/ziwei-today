@@ -1,132 +1,64 @@
 # 今日紫微
 
-> 專為長者設計的紫微斗數每日運勢 App
-> 底層做嚴謹的紫微斗數排盤運算，上層只給長者看得懂的白話文生活建議。
+Android 紫微斗數生活提醒 APP。命盤在裝置計算，新解讀透過使用者授權的 ChatGPT 會員額度生成。
 
-![Platform](https://img.shields.io/badge/platform-Android-green)
-![Language](https://img.shields.io/badge/language-Kotlin-blueviolet)
-![UI](https://img.shields.io/badge/UI-Jetpack%20Compose-blue)
-![MinSDK](https://img.shields.io/badge/minSDK-26-orange)
-![Status](https://img.shields.io/badge/status-v1.0.0%20待驗收-orange)
+## 1.4.2 解讀串流修正候選版
 
----
+- 收集逐段文字及各層完成快照；最後完成事件未重複附上文字時，可使用已收齊的內容。完整終態快照仍優先，避免重複拼接。
+- 仍要求 response.completed、completed 狀態與有效 JSON。中斷、額度失敗、拒絕或不完整回覆不保存；拒絕會顯示明確提示。
+- 解讀失敗可展開並複製錯誤資訊，包含版本、HTTP、串流事件數、文字字元數、已知錯誤碼與清理後的 request ID；不包含命盤內容、原始回覆、token 或 email。
 
-## 這是什麼
+- 移除 OpenRouter 登入、模型路由、免費次數查詢及舊連線程式。升級時只清除該連線的本機憑證，保留家人與歷史資料。
+- 只使用 OpenAI 官方 Sign in with ChatGPT 與會員額度授權；沒有 API Key 輸入或開發者付費 Key 備援。
+- 符合資格的 Plus／Pro 帳號可依官方授權結果使用會員額度。Free、會員資格、APP 註冊是否被接受及真實生成必須分別驗證。
+- 登入透過系統瀏覽器、PKCE、state、nonce、RS256 ID Token 驗證與 loopback callback。返回連結只導航，不傳遞授權碼或憑證。
+- 憑證以 Android Keystore AES/GCM 保存，更新的 refresh token 原子寫入。登出會清除本機連線並嘗試撤銷遠端授權。
+- 解讀使用當前帳號回報的可用模型，保留官方目錄順序；日常介面不展示模型名稱。使用 Responses 串流，store=false；只有完整成功事件與有效格式才保存。切換帳號、登出或取消後不保存舊連線的結果。
+- 首頁、帳號、家人、主題、解讀、歷史、設定與說明統一為星空深藍、藍紫青漸層、星軌與細緻邊框；淺色版搭配冰藍／淡紫背景，保留三級大字。加入短暫分階段淡入與頁面轉場，依系統動畫縮放設定；沒有常駐動畫迴圈。完整命盤可左右滑動，宮位內可上下捲動。
+- 保留 GitHub Release 更新提醒、家人資料、歷史快取、農曆輸入與晚子時選項。
 
-**「奶奶看得懂、爸媽願意每天開、底下一樣是真的紫微斗數演算法。」**
+v1.4.2 提供 GitHub 發行下載；編譯與合成協定測試不代表真人登入、會員額度或推論已成功。真人帳號可用性仍依授權與實際生成結果確認。
 
-市面上的紫微 App 大多直接把傳統十二宮星盤丟給使用者，對不懂命理的長者形同天書。本專案反向操作：
+## 安裝與驗收
 
-- **底層**：完整實作紫微斗數演算法（14 主星 + 輔星 + 煞星 + 四化 + 三層流運）
-- **上層**：白話文卡片，每天早上 7 點推播一次「今日適合做什麼」
-- **無障礙**：大字、高對比、TalkBack 友善
+[下載最新發行版](https://github.com/littleblackmann/ziwei-today/releases/latest) · [v1.4.2 更新說明](docs/RELEASE-v1.4.2.md)
 
----
+主要 APK：dist/今日紫微-v1.4.2.apk。沿用原發行包的憑證；直接覆蓋相容簽名的舊版，不需要解除安裝或清除資料。
 
-## 特色
+若遇「簽名不符」，請先確認原安裝來源。舊 local-development APK 使用另一份簽名，對應檔案為 dist/今日紫微-v1.4.2-local-development.apk；兩份新版 APK 的簽名均已與同類舊版比對。不要為了安裝新版而刪除有家人資料的 APP。
 
-- 🌙 **完全離線** — 排盤、農曆、字典全部本地，零網路、零後端、零 API 費用
-- 👵 **長者優先** — 24sp 起跳的字、單頁卡片、零學習曲線
-- 🧮 **演算法不偷工** — 純 Kotlin 從零實作，不依賴任何外部命理套件
-- 👨‍👩‍👧‍👦 **多家人管理** — 一台手機管全家人的命盤
-- 🔐 **隱私 100%** — 所有資料只在手機上，可匯出 JSON 自行備份
+流程：我的帳號 → Continue with ChatGPT → 閱讀授權說明 → OpenAI 官方頁面登入與授權 → 返回 APP 確認權限 → 開始今日解讀。
 
----
+登入失敗可複製安全的階段、HTTP 狀態與 request ID；解讀失敗請按「檢視錯誤資訊」→「複製錯誤資訊」。請勿分享含授權碼的瀏覽器網址。
 
-## 技術規格
+完整驗收與實際證據：[docs/TESTING.md](docs/TESTING.md)、[docs/preview/v1.4.2](docs/preview/v1.4.2)。1.4.1 外觀驗收仍保留在 docs/preview/v1.4.1。
 
-| 項目 | 內容 |
-|------|------|
-| 語言 | Kotlin 2.1.0 |
-| UI | Jetpack Compose (BOM 2024.12.01) + Material 3 |
-| 最低 SDK | API 26 (Android 8.0) |
-| 目標 SDK | API 35 (Android 15) |
-| 資料庫 | Room 2.6.1 (KSP) |
-| 偏好 | DataStore Preferences |
-| 排程 | WorkManager 2.9.1（OneTime 鏈式排程確保準時）|
-| 導覽 | Navigation Compose |
-| JVM Target | 17 |
+## 開發
 
----
+Kotlin 2.1、Compose Material 3、Room、DataStore、OkHttp、WorkManager；minSdk 26、targetSdk 35。
 
-## 專案結構
-
-```
-今日紫微/
-├── app/                           Android 專案
-│   ├── src/main/java/com/zwds/today/
-│   │   ├── astro/                 演算法核心（純 Kotlin、可 JVM 測試）
-│   │   ├── data/                  Room、DataStore、Repository
-│   │   ├── domain/                UseCase、Model
-│   │   ├── ui/                    Compose 畫面
-│   │   └── worker/                推播排程
-│   └── src/main/assets/database/  預打包的字典 SQLite
-├── 工作日誌/                       每日工作日誌
-├── 今日紫微_專案報告.md             完整專案報告（接手者必讀）
-├── 開發計畫書.md                   階段任務清單
-└── dist/                          打包好的 APK
+```powershell
+.\build.ps1 -Test
+.\build.ps1 -Debug
+.\build.ps1 -Install -Device emulator-5582
 ```
 
----
+SDK、Gradle 與 keystore 使用專案忽略的本機目錄。腳本不會自動提交、推送或發布。
 
-## 給接手者
+## 發布與更新
 
-第一次來的話請依序看：
+儲存庫：[littleblackmann/ziwei-today](https://github.com/littleblackmann/ziwei-today)。
 
-1. [今日紫微_專案報告.md](今日紫微_專案報告.md) — 5 分鐘掌握全貌
-2. [開發計畫書.md](開發計畫書.md) — 看現在做到哪、下一步是什麼
-3. [工作日誌/](工作日誌/) — 看最近三篇了解最新脈絡
+提高版本、編譯，再依需求使用 tools/Publish-Release.ps1 建立正式 Release，附相容簽名 APK。APP 啟動／回到前景與背景約六小時檢查固定 repo 的正式 Release。背景檢查受 Android 調度與通知權限影響；更新由 Android 安裝畫面確認。
 
----
+會員額度整合目前依 OpenAI 的預覽資格與分發條件提供。官方文件區分開源／本機應用與付費／遠端代管應用；公開分發前需確認適用資格及授權，不能把本機候選版當成獲准正式上架。
 
-## 開發指令
+## 官方整合文件
 
-```bash
-# 一鍵編譯 + 安裝到模擬器（需先開 MSI App Player）
-build_and_install.bat
+- [Sign in with ChatGPT](https://developers.openai.com/siwc/quickstart)
+- [ChatGPT plan usage](https://developers.openai.com/siwc/token-sharing-open-source)
+- [Registration and sign-in](https://developers.openai.com/siwc/token-sharing-open-source/sign-in)
+- [Models and inference](https://developers.openai.com/siwc/token-sharing-open-source/models-and-inference)
+- [Preview limitations](https://developers.openai.com/siwc/token-sharing-open-source/preview-limitations)
 
-# 或手動
-gradlew assembleDebug
-gradlew assembleRelease
-```
-
----
-
-## 下載與安裝
-
-**v1.0.0 已產出**：[`dist/今日紫微-v1.0.0.apk`](dist/今日紫微-v1.0.0.apk)（18.0 MB，debug 簽名）
-
-### 安裝到 MSI App Player
-
-```
-build_and_install.bat
-```
-
-腳本會自動：編譯 → adb connect 127.0.0.1:21503 → install → 啟動 App。
-
-### 安裝到實體 Android 手機
-
-1. 把 `dist/今日紫微-v1.0.0.apk` 傳到手機
-2. 開啟「未知來源安裝」
-3. 點擊 APK 檔安裝
-4. 第一次啟動會看到免責聲明 → 同意後新增第一位家人 → 進入首頁
-
-> **注意**：v1.0.0 是 debug 簽名，未來換成 release keystore 重新發版時，使用者必須先解除安裝才能裝新版（家人資料會清空）。建議目前只發給願意配合測試的試用者。
-
----
-
-## 開發守則（從踩過的坑學來的）
-
-1. 改 `family_members` schema 必寫 migration（長者不會重輸資料）
-2. 演算法層保持純淨（`astro/` 不可 import Android Framework）
-3. 字體一律用 `sp` 不用 `dp`
-4. 觸控區一律 ≥ 48dp
-5. 推播用 `OneTimeWorkRequest` 鏈式排程（PeriodicWork 不準時）
-6. 離線優先（不引入網路依賴）
-7. 不擴大 scope（順手做的衝動先記到日誌的「先不做」清單）
-
----
-
-## License
-
-私人專案，未開源。
+舊報告與工作日誌只記載各次歷史狀態，不代表現行整合或實測結果。

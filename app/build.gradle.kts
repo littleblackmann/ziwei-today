@@ -6,6 +6,16 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+// Avoid Gradle's Windows test-worker argfile encoding issue with Chinese workspace paths.
+tasks.register("writeJvmTestClasspath") {
+    dependsOn("compileDebugUnitTestKotlin", "bundleDebugClassesToRuntimeJar", "processDebugUnitTestJavaRes")
+    doLast {
+        val unitTest = tasks.named<Test>("testDebugUnitTest").get()
+        layout.buildDirectory.file("jvm-test-classpath.txt").get().asFile
+            .writeText(unitTest.classpath.asPath, Charsets.UTF_8)
+    }
+}
+
 android {
     namespace = "com.zwds.today"
     compileSdk = 35
@@ -14,8 +24,8 @@ android {
         applicationId = "com.zwds.today"
         minSdk = 26
         targetSdk = 35
-        versionCode = 11
-        versionName = "1.1.0"
+        versionCode = 18
+        versionName = "1.4.2"
 
         // 預設只包 64 位元 ABI（MSI App Player 是 x86_64，真機是 arm64-v8a）
         ndk {
@@ -25,6 +35,12 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+    }
+
+    // Preserve the certificate used by the distributed APK; keystore remains local and ignored.
+    signingConfigs.getByName("debug") {
+        val publishedStore = rootProject.file(".android-home/published-debug.keystore")
+        if (publishedStore.exists()) storeFile = publishedStore
     }
 
     buildTypes {
@@ -63,6 +79,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     // Room schema 匯出目錄（schema 變更時 git 可追蹤 diff）
@@ -123,7 +140,7 @@ dependencies {
     // Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
-    // OkHttp（呼叫 OpenAI Responses API）
+    // OkHttp（帳號授權與雲端解讀）
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
     implementation("com.squareup.okhttp3:okhttp")
     implementation("com.squareup.okhttp3:logging-interceptor")
@@ -131,6 +148,7 @@ dependencies {
     // Core
     implementation("androidx.core:core-ktx:1.15.0")
     implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
 
     // Debug
     debugImplementation("androidx.compose.ui:ui-tooling")

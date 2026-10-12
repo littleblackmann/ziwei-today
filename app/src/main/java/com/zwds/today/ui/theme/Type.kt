@@ -47,23 +47,23 @@ fun zwdsTypography(scale: FontScale = FontScale.Standard): Typography {
         displaySmall = style(28f, FontWeight.Bold, 1.3f),
 
         // 卡片標題
-        headlineLarge = style(28f, FontWeight.Bold, 1.4f),
+        headlineLarge = style(30f, FontWeight.Bold, 1.4f),
         headlineMedium = style(24f, FontWeight.Bold, 1.4f),
         headlineSmall = style(22f, FontWeight.Medium, 1.4f),
 
         // 內文（白話文建議的主要載體）
-        titleLarge = style(22f, FontWeight.Medium, 1.5f),
-        titleMedium = style(20f, FontWeight.Medium, 1.5f),
-        titleSmall = style(18f, FontWeight.Medium, 1.5f),
+        titleLarge = style(21f, FontWeight.Medium, 1.45f),
+        titleMedium = style(17f, FontWeight.Medium, 1.5f),
+        titleSmall = style(15f, FontWeight.Medium, 1.5f),
 
         // 按鈕、標籤
-        labelLarge = style(18f, FontWeight.Medium, 1.4f),
-        labelMedium = style(16f, FontWeight.Medium, 1.4f),
-        labelSmall = style(14f, FontWeight.Normal, 1.4f),
+        labelLarge = style(16f, FontWeight.Medium, 1.4f),
+        labelMedium = style(13f, FontWeight.Medium, 1.4f),
+        labelSmall = style(12f, FontWeight.Normal, 1.4f),
 
         // 內文段落（建議文，最重要）
-        bodyLarge = style(20f, FontWeight.Normal, 1.6f),
-        bodyMedium = style(18f, FontWeight.Normal, 1.6f),
-        bodySmall = style(16f, FontWeight.Normal, 1.6f),
+        bodyLarge = style(18f, FontWeight.Normal, 1.8f),
+        bodyMedium = style(16f, FontWeight.Normal, 1.65f),
+        bodySmall = style(14f, FontWeight.Normal, 1.6f),
     )
 }

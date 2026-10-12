@@ -26,7 +26,7 @@ object ZwdsViewModelFactory : ViewModelProvider.Factory {
             ) as T
 
         modelClass.isAssignableFrom(SettingsViewModel::class.java) ->
-            SettingsViewModel(ServiceLocator.userPreferences) as T
+            SettingsViewModel(ServiceLocator.userPreferences, ServiceLocator.accountRepository) as T
 
         modelClass.isAssignableFrom(TopicPickerViewModel::class.java) ->
             TopicPickerViewModel(ServiceLocator.familyRepository) as T

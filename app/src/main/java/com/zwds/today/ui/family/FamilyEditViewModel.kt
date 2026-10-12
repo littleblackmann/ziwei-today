@@ -100,6 +100,7 @@ class FamilyEditViewModel(
 
     fun save() {
         val current = _state.value
+        if (current.saving) return
         if (current.name.isBlank()) {
             _state.update { it.copy(error = "請填寫稱呼") }
             return

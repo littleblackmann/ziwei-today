@@ -1,0 +1,96 @@
+{
+  "version": "1.4.2",
+  "versionCode": 18,
+  "package": "com.zwds.today",
+  "checkedAt": "2026-10-13T00:58:16.0518029+08:00",
+  "sourceSnapshot": "C:/Users/kchbk/AppData/Local/Temp/ziwei-before-stream-142-20261013-004140",
+  "scope": "Responses stream assembly, sanitized inference errors, expandable error information, version and documentation",
+  "liveReport": {
+    "account": "Plus, reported by user",
+    "message": "AI 未回傳解讀內容，請重試",
+    "rawStreamAvailable": false,
+    "exactLiveCauseConfirmed": false
+  },
+  "reproduction": {
+    "fixture": "output_text.delta followed by response.completed with status completed and output=[]",
+    "oldParser": "failed with the same displayed message",
+    "fixedParser": "passes",
+    "evidence": "repro-before-result.txt"
+  },
+  "build": {
+    "release": "passed",
+    "r8": "passed",
+    "jvmTests": 50,
+    "newRegressionTests": 14,
+    "lintDebug": "passed",
+    "lintErrors": 0,
+    "lintWarnings": 31,
+    "diffWhitespace": "passed"
+  },
+  "source": {
+    "changedMainFiles": [
+      "com\\zwds\\today\\data\\network\\ReadingClient.kt",
+      "com\\zwds\\today\\data\\network\\ResponsesStream.kt",
+      "com\\zwds\\today\\ui\\topic\\TopicResultScreen.kt",
+      "com\\zwds\\today\\ui\\topic\\TopicResultViewModel.kt"
+    ],
+    "authStorageAstrology": "hash-identical to 1.4.1 snapshot",
+    "fixtureLauncherInFinalApk": false
+  },
+  "device": {
+    "androidApi": 35,
+    "avd": "Ziwei_QA140_35",
+    "serial": "emulator-5582",
+    "adbServerPort": 5054,
+    "isolated": true,
+    "upgrade": "1.4.1 to 1.4.2 install -r passed",
+    "familyAndHistoryRows": "before, after and final matched",
+    "finalApkRestoredAfterFixture": true,
+    "errorUi": "separate TEMP QA project, production ResponsesStream and TopicResultErrorPanel",
+    "fixtures": [
+      "empty",
+      "quota",
+      "refusal"
+    ],
+    "fontScales": [
+      "standard",
+      "extra large"
+    ],
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "expandCopyCollapse": "passed; Android clipboard preview visible and copied label confirmed",
+    "initialEnvironmentIssue": "System UI ANR and one null-root UI dump during startup; excluded stale XML and reran settled captures",
+    "crashBufferEmpty": true
+  },
+  "artifacts": [
+    {
+      "file": "今日紫微-v1.4.2.apk",
+      "bytes": 2036744,
+      "sha256": "276f856b1128a4219c64176b8486fdf418c826aa993abe24d1a9cb5b9e0a4e28",
+      "certificateSha256": "bf954c35579f6a0c6aa66216273e6dba27b0e3e0d8a3d70e507bcef686740331",
+      "signatureVerified": true,
+      "sameCertificateAs141": true
+    },
+    {
+      "file": "今日紫微-v1.4.2-local-development.apk",
+      "bytes": 2044983,
+      "sha256": "10dbf9b52ddb81f8a7924cbb2183d7eef29734bba91e3fc4552f3ab415daceec",
+      "certificateSha256": "256e5390154e8598f3d9f5c27536491edec6630215c37cbf04be2eb73b727497",
+      "signatureVerified": true,
+      "sameCertificateAs141": true
+    }
+  ],
+  "notVerified": [
+    "the user account exact inference failure cause",
+    "human OAuth and membership authorization by this agent",
+    "live model response, quota use or reading quality after this fix",
+    "Free or every-account eligibility"
+  ],
+  "publication": {
+    "commit": "not performed",
+    "push": "not performed",
+    "release": "not performed"
+  }
+}

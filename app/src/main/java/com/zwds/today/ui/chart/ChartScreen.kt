@@ -2,7 +2,10 @@ package com.zwds.today.ui.chart
 
 import androidx.compose.runtime.Composable
 import com.zwds.today.ui.common.ZwdsScaffold
+import com.zwds.today.ui.common.EditorialPanel
+import com.zwds.today.ui.common.cosmicPanelBrush
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
@@ -93,8 +97,11 @@ fun ChartScreen(onBack: () -> Unit) {
 
             chart?.let { c ->
                 ChartHeader(c)
-                Spacer(Modifier.height(8.dp))
-                TwelvePalaceGrid(c)
+                Text("十二宮命盤 · 左右滑動查看，宮內可上下捲動", style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Box(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())) {
+                    Box(Modifier.width(660.dp)) { TwelvePalaceGrid(c) }
+                }
             }
         }
     }
@@ -103,12 +110,8 @@ fun ChartScreen(onBack: () -> Unit) {
 @Composable
 private fun ChartHeader(c: ChartResult) {
     val lunar = c.birthLunar
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
-    ) {
-        Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    EditorialPanel {
+        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
             Text("農曆 ${lunar.year} 年 ${lunar.month} 月 ${lunar.day} 日" +
                 if (lunar.isLeapMonth) "（閏月）" else "",
                 style = MaterialTheme.typography.titleMedium)
@@ -186,15 +189,15 @@ private fun PalaceCell(c: ChartResult, branch: EarthlyBranch, modifier: Modifier
 
     Box(
         modifier = modifier
-            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(8.dp))
+            .background(cosmicPanelBrush(), RoundedCornerShape(12.dp))
             .border(
                 width = if (isFlowDay || isLife) 2.dp else 1.dp,
                 color = borderColor,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(12.dp)
             )
             .padding(6.dp)
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     branch.cnName,
@@ -237,7 +240,7 @@ private fun CenterCard(c: ChartResult, modifier: Modifier = Modifier) {
             .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(8.dp))
             .padding(12.dp)
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text("命主資訊", style = MaterialTheme.typography.titleMedium, color = MaterialTheme.colorScheme.primary)
             Text("命宮 ${c.lifePalaceBranch.cnName}", style = MaterialTheme.typography.bodySmall)
             Text("身宮 ${c.bodyPalaceBranch.cnName}", style = MaterialTheme.typography.bodySmall)

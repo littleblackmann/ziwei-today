@@ -1,0 +1,101 @@
+{
+  "version": "1.4.1",
+  "versionCode": 17,
+  "package": "com.zwds.today",
+  "checkedAt": "2026-10-12T18:55:32.2584885+08:00",
+  "sourceSnapshot": "C:\\Users\\kchbk\\AppData\\Local\\Temp\\ziwei-before-future-141-20261012-183709",
+  "scope": "interface, motion, launcher/splash, version and documentation",
+  "coreHashComparison": {
+    "files": 42,
+    "authDataDomainAstro": "unchanged from 1.4.0 snapshot"
+  },
+  "build": {
+    "release": "passed",
+    "r8": "passed",
+    "jvmTests": 36,
+    "lintDebug": "passed",
+    "lintErrors": 0,
+    "lintWarnings": 31,
+    "diffWhitespace": "passed"
+  },
+  "device": {
+    "androidApi": 35,
+    "avd": "Ziwei_QA140_35",
+    "serial": "emulator-5582",
+    "adbServerPort": 5054,
+    "isolated": true,
+    "upgrade": "1.4.0 to 1.4.1 overwrite passed",
+    "familyAndHistoryRows": "before and after matched",
+    "screens": [
+      "900x1950 at density360",
+      "2400x1350 at density360"
+    ],
+    "fontsTested": [
+      "standard",
+      "extra large"
+    ],
+    "themesTested": [
+      "light",
+      "dark"
+    ]
+  },
+  "uiPassed": [
+    "home and family selection",
+    "eight topic cards",
+    "family list and editing wheels",
+    "account screen and cancel consent",
+    "signed-out reading error",
+    "cached original-date history fixture",
+    "full chart and horizontal pan",
+    "settings font and theme changes",
+    "extra-large account and consent",
+    "wide centered layout"
+  ],
+  "reducedMotion": {
+    "originalAnimatorScale": "null",
+    "testedScale": 0,
+    "restored": true,
+    "homeVisible": true,
+    "topicNavigation": "passed"
+  },
+  "animationRecording": {
+    "file": "motion.mp4",
+    "durationLimitSeconds": 8,
+    "bytes": 2843901,
+    "screenrecordExitCode": 0
+  },
+  "historyFixture": {
+    "title": "版面驗收範例",
+    "date": "2026-10-11",
+    "generatedByAi": false,
+    "includedInApk": false
+  },
+  "crashBufferEmpty": true,
+  "artifacts": [
+    {
+      "file": "今日紫微-v1.4.1.apk",
+      "bytes": 2036744,
+      "sha256": "729344deb66ec9e42f29d1fc272040907233eadf8f4ccbc4baa1e7ce4c15c445",
+      "certificateSha256": "bf954c35579f6a0c6aa66216273e6dba27b0e3e0d8a3d70e507bcef686740331",
+      "signatureVerified": true
+    },
+    {
+      "file": "今日紫微-v1.4.1-local-development.apk",
+      "bytes": 2044983,
+      "sha256": "c60596719b300583c7961971bc922dfa7fdefafc96643865c563f255d053e534",
+      "certificateSha256": "256e5390154e8598f3d9f5c27536491edec6630215c37cbf04be2eb73b727497",
+      "signatureVerified": true
+    }
+  ],
+  "notVerified": [
+    "human ChatGPT OAuth and membership authorization",
+    "live quota consumption and AI generation",
+    "Free or every-account eligibility",
+    "OpenAI preview distribution eligibility"
+  ],
+  "publication": {
+    "commit": "not performed",
+    "push": "not performed",
+    "release": "not performed"
+  }
+}

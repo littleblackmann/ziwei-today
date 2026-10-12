@@ -1,0 +1,29 @@
+--------- beginning of crash
+E/AndroidRuntime(  635): FATAL EXCEPTION: main
+E/AndroidRuntime(  635): PID: 635
+E/AndroidRuntime(  635): java.lang.NullPointerException: Attempt to invoke interface method 'void android.view.accessibility.IAccessibilityManager.registerUiTestAutomationService(android.os.IBinder, android.accessibilityservice.IAccessibilityServiceClient, android.accessibilityservice.AccessibilityServiceInfo, int, int)' on a null object reference
+E/AndroidRuntime(  635): 	at android.app.UiAutomationConnection.registerUiTestAutomationServiceLocked(UiAutomationConnection.java:651)
+E/AndroidRuntime(  635): 	at android.app.UiAutomationConnection.connect(UiAutomationConnection.java:119)
+E/AndroidRuntime(  635): 	at android.app.UiAutomation.connectWithTimeout(UiAutomation.java:385)
+E/AndroidRuntime(  635): 	at android.app.UiAutomation.connect(UiAutomation.java:330)
+E/AndroidRuntime(  635): 	at com.android.uiautomator.core.UiAutomationShellWrapper.connect(UiAutomationShellWrapper.java:36)
+E/AndroidRuntime(  635): 	at com.android.commands.uiautomator.DumpCommand.run(DumpCommand.java:78)
+E/AndroidRuntime(  635): 	at com.android.commands.uiautomator.Launcher.main(Launcher.java:83)
+E/AndroidRuntime(  635): 	at com.android.internal.os.RuntimeInit.nativeFinishInit(Native Method)
+E/AndroidRuntime(  635): 	at com.android.internal.os.RuntimeInit.main(RuntimeInit.java:369)
+E/AndroidRuntime(  635): Error reporting crash
+E/AndroidRuntime(  635): java.lang.RuntimeException: Bad file descriptor
+E/AndroidRuntime(  635): 	at android.os.BinderProxy.transactNative(Native Method)
+E/AndroidRuntime(  635): 	at android.os.BinderProxy.transact(BinderProxy.java:586)
+E/AndroidRuntime(  635): 	at android.os.IServiceManager$Stub$Proxy.checkService(IServiceManager.java:441)
+E/AndroidRuntime(  635): 	at android.os.ServiceManagerProxy.getService(ServiceManagerNative.java:63)
+E/AndroidRuntime(  635): 	at android.os.ServiceManager.rawGetService(ServiceManager.java:428)
+E/AndroidRuntime(  635): 	at android.os.ServiceManager.getService(ServiceManager.java:175)
+E/AndroidRuntime(  635): 	at android.app.ActivityManager$3.create(ActivityManager.java:5692)
+E/AndroidRuntime(  635): 	at android.app.ActivityManager$3.create(ActivityManager.java:5689)
+E/AndroidRuntime(  635): 	at android.util.Singleton.get(Singleton.java:44)
+E/AndroidRuntime(  635): 	at android.app.ActivityManager.getService(ActivityManager.java:5680)
+E/AndroidRuntime(  635): 	at com.android.internal.os.RuntimeInit$KillApplicationHandler.uncaughtException(RuntimeInit.java:170)
+E/AndroidRuntime(  635): 	at java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1071)
+E/AndroidRuntime(  635): 	at java.lang.ThreadGroup.uncaughtException(ThreadGroup.java:1066)
+E/AndroidRuntime(  635): 	at java.lang.Thread.dispatchUncaughtException(Thread.java:2306)

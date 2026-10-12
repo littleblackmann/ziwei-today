@@ -1,0 +1,14 @@
+JUnit version 4.13.2
+.....E
+Time: 0.122
+There was 1 failure:
+1) completedEnvelopeMayOmitTextAlreadyDeliveredByStream(com.zwds.today.data.network.ResponsesStreamTest)
+com.zwds.today.data.network.OpenAiException: AI 未回傳解讀內容，請重試
+	at com.zwds.today.data.network.ResponsesStream.read$consumeEvent(ResponsesStream.kt:27)
+	at com.zwds.today.data.network.ResponsesStream.read(ResponsesStream.kt:47)
+	at com.zwds.today.data.network.ResponsesStreamTest.read(ResponsesStreamTest.kt:8)
+	at com.zwds.today.data.network.ResponsesStreamTest.completedEnvelopeMayOmitTextAlreadyDeliveredByStream(ResponsesStreamTest.kt:13)
+
+FAILURES!!!
+Tests run: 5,  Failures: 1
+

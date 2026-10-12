@@ -17,11 +17,12 @@ data class SettingsUiState(
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val ziHourSchool: ZiHourSchool = ZiHourSchool.LATE_BELONGS_TO_NEXT_DAY,
     val showFullChart: Boolean = false,
-    val openAiApiKey: String = ""
+
 )
 
 class SettingsViewModel(
-    private val userPreferences: UserPreferences
+    private val userPreferences: UserPreferences,
+    private val auth: com.zwds.today.data.auth.ChatGptAuthRepository
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SettingsUiState())
@@ -40,9 +41,7 @@ class SettingsViewModel(
         viewModelScope.launch {
             userPreferences.showFullChart.collect { v -> _state.update { it.copy(showFullChart = v) } }
         }
-        viewModelScope.launch {
-            userPreferences.openAiApiKey.collect { v -> _state.update { it.copy(openAiApiKey = v) } }
-        }
+
     }
 
     fun setFontScale(scale: FontScale) = viewModelScope.launch {
@@ -61,7 +60,14 @@ class SettingsViewModel(
         userPreferences.setShowFullChart(show)
     }
 
-    fun setOpenAiApiKey(key: String) = viewModelScope.launch {
-        userPreferences.setOpenAiApiKey(key)
+    val account = auth.state
+    private var loginJob: kotlinx.coroutines.Job? = null
+    fun signIn(different: Boolean = false) {
+        if (loginJob?.isActive == true || account.value.busy) return
+        loginJob = com.zwds.today.di.ServiceLocator.applicationScope.launch { auth.signIn(different) }
     }
+    fun cancelSignIn() { loginJob?.cancel(); auth.cancelSignIn() }
+    fun signOut() = com.zwds.today.di.ServiceLocator.applicationScope.launch { auth.signOut() }
+    fun refreshStatus() = viewModelScope.launch { auth.refreshStatus() }
+    fun acknowledgePlanWelcome() = auth.acknowledgePlanWelcome()
 }

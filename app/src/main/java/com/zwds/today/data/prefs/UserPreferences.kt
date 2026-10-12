@@ -40,11 +40,6 @@ class UserPreferences(private val context: Context) {
         prefs[KEY_SHOW_FULL_CHART] ?: false
     }
 
-    /** OpenAI API key（使用者自行申請，存在本機 DataStore，不會上傳到任何 server）*/
-    val openAiApiKey: Flow<String> = dataStore.data.map { prefs ->
-        prefs[KEY_OPENAI_API_KEY] ?: ""
-    }
-
     suspend fun setFontScale(scale: FontScale) =
         dataStore.edit { it[KEY_FONT_SCALE] = scale.name }
 
@@ -65,8 +60,8 @@ class UserPreferences(private val context: Context) {
     suspend fun setShowFullChart(show: Boolean) =
         dataStore.edit { it[KEY_SHOW_FULL_CHART] = show }
 
-    suspend fun setOpenAiApiKey(key: String) =
-        dataStore.edit { it[KEY_OPENAI_API_KEY] = key.trim() }
+    /** Remove obsolete credentials without touching family data or display settings. */
+    suspend fun removeLegacyApiKey() = dataStore.edit { it.remove(stringPreferencesKey("openai_api_key")) }
 
     companion object {
         private val KEY_FONT_SCALE = stringPreferencesKey("font_scale")
@@ -74,7 +69,6 @@ class UserPreferences(private val context: Context) {
         private val KEY_ZI_HOUR_SCHOOL = stringPreferencesKey("zi_hour_school")
         private val KEY_DISCLAIMER_ACCEPTED = booleanPreferencesKey("disclaimer_accepted")
         private val KEY_SHOW_FULL_CHART = booleanPreferencesKey("show_full_chart")
-        private val KEY_OPENAI_API_KEY = stringPreferencesKey("openai_api_key")
     }
 }
 

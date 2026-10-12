@@ -1,0 +1,21 @@
+{
+  "version": "1.3.1",
+  "code": 15,
+  "serial": "emulator-5582",
+  "baseline_version": "1.3.0",
+  "baseline_install": "passed",
+  "overwrite_upgrade": "passed",
+  "preserved_member": "Log",
+  "retained_disclaimer_acceptance": true,
+  "home_to_account": "passed",
+  "actual_account_screenshot": "account.png",
+  "actual_home_screenshot": "home.png",
+  "ui_automation_after_account": "timed out",
+  "consent_screen": "not verified",
+  "return_intent": "timed out",
+  "actual_oauth": "not tested",
+  "actual_inference": "not tested",
+  "junit_tests": 45,
+  "signature_verification": "passed",
+  "apk_sha256": "0899d1d7bc8f65584c1e3b561cef44d9eb193e92e5f2090f20e8a7d07bca6b6b"
+}

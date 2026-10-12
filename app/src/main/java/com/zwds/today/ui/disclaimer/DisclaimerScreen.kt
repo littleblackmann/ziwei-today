@@ -35,17 +35,13 @@ fun DisclaimerScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Text(
-                text = "請先閱讀使用說明",
-                style = MaterialTheme.typography.headlineMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
+            com.zwds.today.ui.common.StarHero("開始之前", "星曜作為提醒，\n日子由您決定。", "留一點時間認識今日紫微。")
 
             Section("這是什麼樣的 App") {
                 Text(
-                    "今日紫微結合中國傳統紫微斗數與 OpenAI GPT-5.4-mini，" +
+                    "今日紫微結合傳統紫微斗數與個人化文字解讀，" +
                         "為您與家人撰寫每日的個人化運勢解讀。" +
-                        "命盤計算在本機進行，文字解讀則由 AI 即時生成。",
+                        "命盤計算在本機進行，文字解讀由自動化服務生成。",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
@@ -60,23 +56,20 @@ fun DisclaimerScreen(
                 )
             }
 
-            Section("關於您的個人資料與 OpenAI") {
+            Section("關於您的個人資料") {
                 Text(
-                    "・家人的姓名、出生資料只儲存在您的手機，本 App 不會把它們上傳給開發者或任何第三方 server。\n" +
-                        "・每次按「開始今日詢問」並產生運勢解讀時，App 會把該位家人的姓名、" +
-                        "出生資料、命盤摘要直接傳送到您自己的 OpenAI 帳號（透過您輸入的 API Key），" +
-                        "由 OpenAI 撰寫文字後回傳。\n" +
-                        "・依 OpenAI 政策，API 請求預設不會被用於模型訓練；詳細條款請見 OpenAI 官網。\n" +
-                        "・若您不希望任何資料離開手機，請不要使用本 App 的查詢功能。",
+                    "・家人檔案與查詢記錄保存在您的手機，不會上傳給開發者。\n" +
+                    "・產生新解讀時，命盤星曜摘要、查詢日期與主題會傳送至 OpenAI。\n" +
+                    "・姓名、完整出生資料與歷史記錄保存在此裝置。\n" +
+                    "・送出的摘要資料依 OpenAI 的政策處理。",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
-
-            Section("您需要自備 OpenAI API Key") {
+            Section("帳號與解讀") {
                 Text(
-                    "・本 App 沒有內建任何 API Key，每位使用者需自行註冊 OpenAI 帳號並建立自己的 API Key。\n" +
-                        "・OpenAI 採量計費（每次查詢約美金 0.001 元以下），費用由您直接付給 OpenAI。\n" +
-                        "・進入「設定 → AI 設定」可看到完整申請教學。",
+                    "・到「設定 → 我的帳號」連接自己的帳號，無需手動設定。\n" +
+                    "・新解讀使用您授權的 ChatGPT 會員額度，需要符合資格的 Plus／Pro 帳號，可用性依實際授權結果為準。\n" +
+                    "・可在設定登出此裝置，或到帳號管理頁撤銷授權。",
                     style = MaterialTheme.typography.bodyLarge
                 )
             }

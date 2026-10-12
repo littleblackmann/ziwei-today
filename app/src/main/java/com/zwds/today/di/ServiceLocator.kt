@@ -2,7 +2,7 @@ package com.zwds.today.di
 
 import android.content.Context
 import com.zwds.today.data.AppDatabase
-import com.zwds.today.data.network.OpenAiClient
+import com.zwds.today.data.network.ReadingClient
 import com.zwds.today.data.prefs.UserPreferences
 import com.zwds.today.data.repository.FamilyRepository
 import com.zwds.today.data.repository.TopicHistoryRepository
@@ -35,10 +35,12 @@ object ServiceLocator {
 
     val userPreferences: UserPreferences by lazy { UserPreferences(appContext) }
 
-    val openAiClient: OpenAiClient by lazy { OpenAiClient() }
+    val accountRepository by lazy { com.zwds.today.data.auth.ChatGptAuthRepository(appContext) }
+    val updateRepository by lazy { com.zwds.today.data.update.UpdateRepository(appContext) }
+    val readingClient: ReadingClient by lazy { ReadingClient(accountRepository) }
 
     val getTopicFortune: GetTopicFortune by lazy {
-        GetTopicFortune(userPreferences, openAiClient, topicHistoryRepository)
+        GetTopicFortune(readingClient, topicHistoryRepository)
     }
 
     fun init(context: Context) {

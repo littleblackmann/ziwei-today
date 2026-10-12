@@ -1,6 +1,12 @@
 package com.zwds.today.ui.nav
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -17,8 +23,8 @@ import com.zwds.today.ui.disclaimer.DisclaimerScreen
 import com.zwds.today.ui.family.FamilyEditScreen
 import com.zwds.today.ui.family.FamilyListScreen
 import com.zwds.today.ui.home.HomeScreen
-import com.zwds.today.ui.settings.ApiKeyTutorialScreen
 import com.zwds.today.ui.settings.SettingsScreen
+import com.zwds.today.ui.settings.AccountScreen
 import com.zwds.today.ui.topic.TopicHistoryScreen
 import com.zwds.today.ui.topic.TopicPickerScreen
 import com.zwds.today.ui.topic.TopicResultScreen
@@ -33,20 +39,21 @@ object Routes {
     const val FAMILY_EDIT_PATTERN = "family/edit/{id}"
     fun familyEdit(id: Long) = "family/edit/$id"
     const val SETTINGS = "settings"
-    const val API_KEY_TUTORIAL = "settings/api-key/tutorial"
+    const val ACCOUNT = "account"
     const val CHART = "chart"
     const val TOPIC_PICKER_PATTERN = "topic/picker/{memberId}"
     fun topicPicker(memberId: Long) = "topic/picker/$memberId"
-    const val TOPIC_RESULT_PATTERN = "topic/result/{memberId}/{topic}"
-    fun topicResult(memberId: Long, topic: FortuneTopic) =
-        "topic/result/$memberId/${topic.name}"
+    const val TOPIC_RESULT_PATTERN = "topic/result/{memberId}/{topic}?date={date}"
+    fun topicResult(memberId: Long, topic: FortuneTopic, date: java.time.LocalDate = java.time.LocalDate.now()) =
+        "topic/result/$memberId/${topic.name}?date=$date"
     const val TOPIC_HISTORY_PATTERN = "topic/history/{memberId}"
     fun topicHistory(memberId: Long) = "topic/history/$memberId"
 }
 
 @Composable
 fun ZwdsNavHost(
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    accountReturnVersion: Int = 0
 ) {
     val prefs = ServiceLocator.userPreferences
     val accepted by prefs.disclaimerAccepted.collectAsState(initial = null)
@@ -57,7 +64,17 @@ fun ZwdsNavHost(
 
     val startDestination = if (accepted == true) Routes.HOME else Routes.DISCLAIMER
 
-    NavHost(navController = navController, startDestination = startDestination) {
+    LaunchedEffect(accountReturnVersion, accepted) {
+        if (accountReturnVersion > 0 && accepted == true && navController.currentDestination?.route != Routes.ACCOUNT)
+            navController.navigate(Routes.ACCOUNT) { launchSingleTop = true }
+    }
+
+    NavHost(navController = navController, startDestination = startDestination,
+        enterTransition = { fadeIn(tween(260)) + slideInHorizontally(tween(260)) { it / 20 } },
+        exitTransition = { fadeOut(tween(180)) },
+        popEnterTransition = { fadeIn(tween(240)) },
+        popExitTransition = { fadeOut(tween(180)) + slideOutHorizontally(tween(220)) { it / 20 } }
+    ) {
         composable(Routes.DISCLAIMER) {
             DisclaimerScreen(
                 isFirstLaunch = true,
@@ -85,6 +102,7 @@ fun ZwdsNavHost(
             HomeScreen(
                 onNavigateToFamily = { navController.navigate(Routes.FAMILY_LIST) },
                 onNavigateToSettings = { navController.navigate(Routes.SETTINGS) },
+                onNavigateToAccount = { navController.navigate(Routes.ACCOUNT) },
                 onNavigateToChart = { navController.navigate(Routes.CHART) },
                 onStartTopicQuery = { memberId ->
                     navController.navigate(Routes.topicPicker(memberId))
@@ -117,12 +135,14 @@ fun ZwdsNavHost(
             SettingsScreen(
                 onBack = { navController.popBackStack() },
                 onShowDisclaimer = { navController.navigate(Routes.DISCLAIMER_REVIEW) },
-                onShowApiKeyTutorial = { navController.navigate(Routes.API_KEY_TUTORIAL) }
+                onOpenAccount = { navController.navigate(Routes.ACCOUNT) }
             )
         }
 
-        composable(Routes.API_KEY_TUTORIAL) {
-            ApiKeyTutorialScreen(onBack = { navController.popBackStack() })
+        composable(Routes.ACCOUNT) {
+            AccountScreen(onBack = { navController.popBackStack() }, onReady = {
+                navController.navigate(Routes.HOME) { popUpTo(Routes.HOME) { inclusive = true }; launchSingleTop = true }
+            })
         }
 
         composable(Routes.CHART) {
@@ -147,7 +167,8 @@ fun ZwdsNavHost(
             route = Routes.TOPIC_RESULT_PATTERN,
             arguments = listOf(
                 navArgument("memberId") { type = NavType.LongType },
-                navArgument("topic") { type = NavType.StringType }
+                navArgument("topic") { type = NavType.StringType },
+                navArgument("date") { type = NavType.StringType; defaultValue = "" }
             )
         ) { backStack ->
             val memberId = backStack.arguments?.getLong("memberId") ?: 0L
@@ -155,8 +176,9 @@ fun ZwdsNavHost(
             TopicResultScreen(
                 memberId = memberId,
                 topic = topic,
+                date = backStack.arguments?.getString("date")?.takeIf { it.isNotBlank() }?.let { java.time.LocalDate.parse(it) } ?: java.time.LocalDate.now(),
                 onBack = { navController.popBackStack() },
-                onOpenApiKeySettings = { navController.navigate(Routes.SETTINGS) }
+                onOpenAccountSettings = { navController.navigate(Routes.ACCOUNT) }
             )
         }
 
@@ -168,8 +190,8 @@ fun ZwdsNavHost(
             TopicHistoryScreen(
                 memberId = memberId,
                 onBack = { navController.popBackStack() },
-                onOpenRecord = { mid, topic ->
-                    navController.navigate(Routes.topicResult(mid, topic))
+                onOpenRecord = { mid, topic, date ->
+                    navController.navigate(Routes.topicResult(mid, topic, date))
                 }
             )
         }

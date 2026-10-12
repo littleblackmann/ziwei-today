@@ -1,0 +1,8 @@
+{
+  "檢視錯誤資訊": true,
+  "複製錯誤資訊": true,
+  "empty_output": true,
+  "response.output_text.done": true,
+  "missing_completed": true,
+  "fixtureLauncherAbsent": true
+}

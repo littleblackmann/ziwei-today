@@ -3,8 +3,7 @@ package com.zwds.today.domain.usecase
 import com.zwds.today.astro.chart.ChartBuilder
 import com.zwds.today.astro.chart.PalaceLocator
 import com.zwds.today.data.entity.FamilyMemberEntity
-import com.zwds.today.data.network.OpenAiClient
-import com.zwds.today.data.network.OpenAiException
+import com.zwds.today.data.network.ReadingClient
 import com.zwds.today.data.network.TopicFortuneJson
 import com.zwds.today.data.prefs.UserPreferences
 import com.zwds.today.data.repository.TopicHistoryRepository
@@ -20,26 +19,9 @@ import com.zwds.today.domain.model.ZiHourSchool
 import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 
-/**
- * 主題式今日運勢 UseCase（OpenAI 版）
- *
- * 流程：
- *   1. 用 ChartBuilder 算出本命盤 + 流日宮位
- *   2. 找到主題對應的流日宮所在地支與駐守星曜
- *   3. 先查快取（topic_history 表）—— 同一 (memberId, date, topic) 不重複呼叫 LLM
- *   4. 若快取沒有：用使用者輸入的 OpenAI API key 呼叫 gpt-5.4-mini，
- *      要求結構化輸出 (title / level / advice / tags / focus_summary)
- *   5. 解析後存進快取，回傳 [TopicFortune]
- *
- * 失敗模式：
- *   - 沒設 API key → 拋 [MissingApiKeyException]
- *   - 網路 / OpenAI 回傳錯誤 → 拋 [OpenAiException]（由 ViewModel 顯示）
- *
- * 不再有離線字典 fallback：本 App 已決定走全網路 LLM 路線。
- */
+/** Local chart and cache first; new readings use the connected account. */
 class GetTopicFortune(
-    private val userPreferences: UserPreferences,
-    private val openAiClient: OpenAiClient,
+    private val readingClient: ReadingClient,
     private val historyRepository: TopicHistoryRepository
 ) {
 
@@ -56,9 +38,6 @@ class GetTopicFortune(
             }
         }
 
-        val apiKey = userPreferences.openAiApiKey.first()
-        if (apiKey.isBlank()) throw MissingApiKeyException()
-
         val chart = ChartBuilder.build(
             solarBirth = member.toSolarBirth(),
             gender = member.gender(),
@@ -72,7 +51,6 @@ class GetTopicFortune(
 
         val systemInstructions = SYSTEM_INSTRUCTIONS
         val userPrompt = buildPrompt(
-            member = member,
             date = date,
             topic = topic,
             chart = chart,
@@ -81,11 +59,11 @@ class GetTopicFortune(
             flowDayStars = flowDayStars
         )
 
-        val result: TopicFortuneJson = openAiClient.generateTopicFortune(
-            apiKey = apiKey,
+        val generated = readingClient.generateTopicFortune(
             systemInstructions = systemInstructions,
             userPrompt = userPrompt
         )
+        val result = generated.fortune
 
         val fortune = TopicFortune(
             familyMemberId = member.id,
@@ -100,12 +78,16 @@ class GetTopicFortune(
             advice = result.advice,
             tags = result.tags
         )
-        historyRepository.save(fortune, focusSummary = result.focusSummary)
+        readingClient.saveIfCurrent(generated) {
+            historyRepository.save(fortune, focusSummary = result.focusSummary)
+        }
         return fortune
     }
 
+    suspend fun hasCached(memberId: Long, date: LocalDate, topic: FortuneTopic): Boolean =
+        historyRepository.find(memberId, date, topic) != null
+
     private fun buildPrompt(
-        member: FamilyMemberEntity,
         date: LocalDate,
         topic: FortuneTopic,
         chart: ChartResult,
@@ -113,14 +95,11 @@ class GetTopicFortune(
         palaceStars: List<PlacedStar>,
         flowDayStars: List<PlacedStar>
     ): String {
-        val genderStr = if (member.gender.equals("FEMALE", true)) "女" else "男"
         val natalLifeStars = chart.palaceAt(chart.lifePalaceBranch).stars
         val sb = StringBuilder()
 
         // 1. 人物背景
         sb.appendLine("【來訪者資料】")
-        sb.appendLine("姓名：${member.name}（$genderStr）")
-        sb.appendLine("出生：${member.solarYear} 年 ${member.solarMonth} 月 ${member.solarDay} 日 ${member.hour24} 時")
         sb.appendLine("五行局：${chart.fiveElement.cnName}　生年干支：${chart.yearStem.cnName}${chart.yearBranch.cnName}")
         sb.appendLine("本命命宮（${chart.lifePalaceBranch.cnName}）：${formatStars(natalLifeStars)}")
         sb.appendLine()
@@ -139,7 +118,7 @@ class GetTopicFortune(
         sb.appendLine()
 
         // 4. 解盤任務（以對話口吻提問）
-        sb.appendLine("${member.name} 今天來問「${topic.cnName}」。")
+        sb.appendLine("來訪者今天來問「${topic.cnName}」。")
         sb.appendLine("請你以命理師的角色，用說話的口吻直接告訴他今天在這方面的狀況。")
         sb.appendLine("先講一句最核心的提醒，再說今天最值得把握的是什麼、最要留意的是什麼，最後補上你為什麼這樣判斷。")
         sb.appendLine("今天整體是什麼感覺？這些星曜落在這個宮位，在「${topic.cnName}」的情境下代表什麼？")
@@ -191,5 +170,3 @@ class GetTopicFortune(
         """.trimIndent()
     }
 }
-
-class MissingApiKeyException : Exception("尚未設定 OpenAI API Key，請至「設定 → AI 設定」輸入。")
