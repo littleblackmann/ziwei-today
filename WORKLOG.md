@@ -229,3 +229,20 @@ Android 返回與 task 行為參考：
 - https://developers.openai.com/siwc/token-sharing-open-source/models-and-inference
 - https://developers.openai.com/api/reference/resources/responses/streaming-events
 - https://developers.openai.com/siwc/token-sharing-open-source/preview-limitations
+
+# 2026-10-13 · v1.4.2 GitHub 發布與作品網站同步
+
+使用者確認成果後，明確授權上傳 GitHub 並更新 E 槽作品網站。本輪發布既有驗證過的 1.4.2，不再次改動 Android 功能、會員機制或資料。
+
+- 程式與既有驗收文件提交 a76983567a4860c5611ed1971abcb0a184095c08，推至 littleblackmann/ziwei-today 的 master；沿用原 PUBLIC 可見性。已檢查暫存項目，不包含 APK、keystore、local.properties 或 SDK；文字憑證樣式掃描未見私密 Key。歷史原始診斷日誌保留，發布的來源空白檢查排除原始 preview 證據。
+- v1.4.2 正式 Release 指向上述 source commit；先建 draft，回下載兩包 APK／checksum／manifest 核對後發布。公開 releases/latest 回傳 v1.4.2、draft=false、prerelease=false、4 assets；匿名下載兩包 SHA256 與原本驗證版本相同。
+- 公開安裝包使用 ASCII 名稱 ZiweiToday-v1.4.2.apk 及 ZiweiToday-v1.4.2-local-development.apk；原憑證與舊版相容性不變，保留 SHA256SUMS 與含 source commit／憑證的 manifest。Publish-Release.ps1 同步固定 ASCII 名稱並指定 source commit，避免未來網站挑錯資產。
+- 以正式 ReleaseInfo.parse 讀實際公開 JSON：安裝 1.4.1 偵測 1.4.2、安裝 1.4.2 不提示。未在使用者真機等待背景排程或代按通知／安裝。
+- 網站 E:/小黑的網頁/littleblackmann.github.io-main 的紫微介紹從 v1.0.0 更新為 v1.4.2，替換 Google Drive、舊 API Key 教學與舊畫面。新增 9 張示範截圖、會員資格與資料傳送說明、更新與覆蓋安裝方式；保留暖金風格及其他作品。動態主 APK 下載有嚴格來源／名稱核對與 GitHub 頁面備援，17 個情境通過。
+- 同機 AI 廚房任務已先提交 4cb8ff6；本輪保留所有 chef 內容並分離提交 15 個紫微相關檔案，網站 commit 09d084f0596f833a2ba288b602035202b306ed2c 已推 main。六個其他作品的 JSON 項目逐一相同，共用快取標記為 ziwei142-chef092。
+- Pages run 38284354042 success、latest build=built 且 commit 相同。正式首頁／紫微 HTML／JS／projects.json／sitemap／lightbox 與 9 張 PNG 共 15 個檔案 HTTP200、SHA256 與本機相符（文字 CRLF/LF 正規化，PNG exact）。本機及正式網頁六種寬度無溢出；放大／下一張／Escape／關閉與實際下載 href 確認。
+
+發布驗證：docs/publish/v1.4.2/verification.json；原 APK 測試證據仍在 docs/preview/v1.4.2，不改寫當時未發布的歷史紀錄。Ignored dist/publish-audit 保存回下載、公開 metadata、頁面截圖與詳細比對。真人 Plus 修正後生成、額度／分發資格與 Free 仍未驗收，不因 GitHub 上傳或網頁上線而宣稱通過。
+
+正式下載：https://github.com/littleblackmann/ziwei-today/releases/tag/v1.4.2
+正式介紹：https://littleblackmann.github.io/projects/ziwei-today.html

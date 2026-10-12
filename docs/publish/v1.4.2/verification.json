@@ -1,0 +1,235 @@
+{
+  "checkedAt": "2026-10-13T01:32:51.6768473+08:00",
+  "version": "1.4.2",
+  "versionCode": 18,
+  "source": {
+    "repo": "https://github.com/littleblackmann/ziwei-today",
+    "branch": "master",
+    "releaseCommit": "a76983567a4860c5611ed1971abcb0a184095c08",
+    "visibility": "PUBLIC",
+    "tag": "v1.4.2"
+  },
+  "release": {
+    "url": "https://github.com/littleblackmann/ziwei-today/releases/tag/v1.4.2",
+    "draft": false,
+    "prerelease": false,
+    "assetCount": 4,
+    "draftRoundTripHashesMatched": true,
+    "publicDownloads": [
+      {
+        "name": "ZiweiToday-v1.4.2.apk",
+        "url": "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2.apk",
+        "bytes": 2036744,
+        "sha256": "276f856b1128a4219c64176b8486fdf418c826aa993abe24d1a9cb5b9e0a4e28"
+      },
+      {
+        "name": "ZiweiToday-v1.4.2-local-development.apk",
+        "url": "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2-local-development.apk",
+        "bytes": 2044983,
+        "sha256": "10dbf9b52ddb81f8a7924cbb2183d7eef29734bba91e3fc4552f3ab415daceec"
+      }
+    ]
+  },
+  "oldVersionUpdate": {
+    "implementation": "production ReleaseInfo.parse against anonymous releases/latest JSON",
+    "installed141": "detects v1.4.2",
+    "installed142": "no prompt",
+    "backgroundNotificationOnUserDevice": "not tested"
+  },
+  "website": {
+    "localPath": "E:/小黑的網頁/littleblackmann.github.io-main",
+    "url": "https://littleblackmann.github.io/projects/ziwei-today.html",
+    "commit": "09d084f0596f833a2ba288b602035202b306ed2c",
+    "pagesRun": {
+      "conclusion": "success",
+      "databaseId": 38284354042,
+      "headSha": "09d084f0596f833a2ba288b602035202b306ed2c",
+      "status": "completed",
+      "url": "https://github.com/littleblackmann/littleblackmann.github.io/actions/runs/38284354042"
+    },
+    "publicFiles": [
+      {
+        "file": "index.html",
+        "url": "https://littleblackmann.github.io/index.html",
+        "httpStatus": 200,
+        "normalizedText": true,
+        "sha256": "dbc106b826af9d90447134e14b7bb7e1c5fa103052ec7caef20fefd08d3ea97d",
+        "matchesLocal": true
+      },
+      {
+        "file": "projects/ziwei-today.html",
+        "url": "https://littleblackmann.github.io/projects/ziwei-today.html",
+        "httpStatus": 200,
+        "normalizedText": true,
+        "sha256": "64229475f2ec96cb060ea40bf0e1b4e94344c8993f8e9a2f58038460c3d11187",
+        "matchesLocal": true
+      },
+      {
+        "file": "projects/ziwei-release.js",
+        "url": "https://littleblackmann.github.io/projects/ziwei-release.js",
+        "httpStatus": 200,
+        "normalizedText": true,
+        "sha256": "02326e61784c0e15ec4a12269ce5fb5c26b07e0691e148c347a09c766a27fe92",
+        "matchesLocal": true
+      },
+      {
+        "file": "image-lightbox.js",
+        "url": "https://littleblackmann.github.io/image-lightbox.js",
+        "httpStatus": 200,
+        "normalizedText": true,
+        "sha256": "6d6a8626f2f1fc7590f87088131b477925373b94d41dede957ba81b3ad8d51c8",
+        "matchesLocal": true
+      },
+      {
+        "file": "projects.json",
+        "url": "https://littleblackmann.github.io/projects.json",
+        "httpStatus": 200,
+        "normalizedText": true,
+        "sha256": "46fe664f6dd4178ed62531e7654fc15ec7eaa3c1bd51f23344345706f671f818",
+        "matchesLocal": true
+      },
+      {
+        "file": "sitemap.xml",
+        "url": "https://littleblackmann.github.io/sitemap.xml",
+        "httpStatus": 200,
+        "normalizedText": true,
+        "sha256": "7a094a45b741776132e5cffb6ca04e4780aef81410461aa2ef82c31a4da7e373",
+        "matchesLocal": true
+      },
+      {
+        "file": "images/projects/ziwei-v141-account.png",
+        "url": "https://littleblackmann.github.io/images/projects/ziwei-v141-account.png",
+        "httpStatus": 200,
+        "normalizedText": false,
+        "sha256": "21d325b298f4cb780c6532526982ceed89942bb5f253b0f824bd6f660728ba3d",
+        "matchesLocal": true
+      },
+      {
+        "file": "images/projects/ziwei-v141-chart.png",
+        "url": "https://littleblackmann.github.io/images/projects/ziwei-v141-chart.png",
+        "httpStatus": 200,
+        "normalizedText": false,
+        "sha256": "16d69d0124b04907ba40ab4c6691a61232e525141c1b89fb6b03aed411d08ed9",
+        "matchesLocal": true
+      },
+      {
+        "file": "images/projects/ziwei-v141-family-edit.png",
+        "url": "https://littleblackmann.github.io/images/projects/ziwei-v141-family-edit.png",
+        "httpStatus": 200,
+        "normalizedText": false,
+        "sha256": "5b07d31413559f4afced162d015a2781fbfbde10db40c92d41bb8fbd548938b3",
+        "matchesLocal": true
+      },
+      {
+        "file": "images/projects/ziwei-v141-family.png",
+        "url": "https://littleblackmann.github.io/images/projects/ziwei-v141-family.png",
+        "httpStatus": 200,
+        "normalizedText": false,
+        "sha256": "be155adf6e6ae5631959f05fa87bacc384dfe0fba194b6d08f1776c3a505c31f",
+        "matchesLocal": true
+      },
+      {
+        "file": "images/projects/ziwei-v141-history-demo.png",
+        "url": "https://littleblackmann.github.io/images/projects/ziwei-v141-history-demo.png",
+        "httpStatus": 200,
+        "normalizedText": false,
+        "sha256": "e17843376eab897d90543e5535a7109476dc1ae3861db90c924cc884e8e2ca57",
+        "matchesLocal": true
+      },
+      {
+        "file": "images/projects/ziwei-v141-reading-demo.png",
+        "url": "https://littleblackmann.github.io/images/projects/ziwei-v141-reading-demo.png",
+        "httpStatus": 200,
+        "normalizedText": false,
+        "sha256": "12736205d64d6b9db274d3184e85efb78e1973d09fd25bdf1d4c08bbe59ba619",
+        "matchesLocal": true
+      },
+      {
+        "file": "images/projects/ziwei-v141-settings.png",
+        "url": "https://littleblackmann.github.io/images/projects/ziwei-v141-settings.png",
+        "httpStatus": 200,
+        "normalizedText": false,
+        "sha256": "cc8187b05ba54cb530f97e4079ed2e06c460cbd280767945d923f7f31753f029",
+        "matchesLocal": true
+      },
+      {
+        "file": "images/projects/ziwei-v141-topics.png",
+        "url": "https://littleblackmann.github.io/images/projects/ziwei-v141-topics.png",
+        "httpStatus": 200,
+        "normalizedText": false,
+        "sha256": "4ace65d8ccb6894cbeeb1cd120a7d71cee0e64c6150918a10cc27565439e96f0",
+        "matchesLocal": true
+      },
+      {
+        "file": "images/projects/ziwei-v142-home.png",
+        "url": "https://littleblackmann.github.io/images/projects/ziwei-v142-home.png",
+        "httpStatus": 200,
+        "normalizedText": false,
+        "sha256": "02816926249b7a4063614701b9d79b1177aeb3e50ce21a9597876096705aa586",
+        "matchesLocal": true
+      }
+    ],
+    "releaseScriptCasesPassed": 17,
+    "responsiveGeometry": [
+      {
+        "downloads": [
+          "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2.apk",
+          "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2.apk"
+        ],
+        "overflow": [],
+        "scrollWidth": 305,
+        "width": 305
+      },
+      {
+        "downloads": [
+          "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2.apk",
+          "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2.apk"
+        ],
+        "overflow": [],
+        "scrollWidth": 360,
+        "width": 360
+      },
+      {
+        "downloads": [
+          "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2.apk",
+          "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2.apk"
+        ],
+        "overflow": [],
+        "scrollWidth": 505,
+        "width": 505
+      },
+      {
+        "downloads": [
+          "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2.apk",
+          "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2.apk"
+        ],
+        "overflow": [],
+        "scrollWidth": 753,
+        "width": 753
+      },
+      {
+        "downloads": [
+          "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2.apk",
+          "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2.apk"
+        ],
+        "overflow": [],
+        "scrollWidth": 1265,
+        "width": 1265
+      },
+      {
+        "downloads": [
+          "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2.apk",
+          "https://github.com/littleblackmann/ziwei-today/releases/download/v1.4.2/ZiweiToday-v1.4.2.apk"
+        ],
+        "overflow": [],
+        "scrollWidth": 1425,
+        "width": 1425
+      }
+    ],
+    "lightbox": "open, next, Escape and close verified in local and public browsers",
+    "otherSixProjectEntries": "unchanged from concurrent AI kitchen commit 4cb8ff6"
+  },
+  "liveAccountInferenceAfterFix": "not verified; user retest required",
+  "apiKeyFilesPublished": false,
+  "openRouterRestored": false
+}
